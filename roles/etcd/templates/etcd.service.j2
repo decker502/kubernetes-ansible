@@ -1,0 +1,17 @@
+[Unit]
+Description=Etcd Server
+After=network.target
+
+[Service]
+EnvironmentFile=-/etc/kubernetes/etcd
+Type=simple
+# etc logs to the journal directly, suppress double logging
+StandardOutput=null
+WorkingDirectory=/var/lib/etcd
+User=etcd
+ExecStart=/opt/bin/etcd \
+	${LISTEN_PEER_URLS} \
+	${LISTEN_CLIENT_URLS}
+
+[Install]
+WantedBy=multi-user.target

@@ -23,6 +23,14 @@
   notify:
           - restart scheduler
 
+- name: Copy master service files
+  copy: src={{ item }} dest=/usr/lib/systemd/system/ mode=644
+  with_fileglob:
+        - ./kube-*
+
+- name: Daemon reload
+  command: "systemctl daemon-reload"
+
 - name: Enable apiserver
   service: name=kube-apiserver enabled=yes state=started
 
@@ -35,8 +43,8 @@
 - include: load_nodes.yml
   when: kube_node_via_api and not is_aws
 
-- include: firewalld.yml
-  when: has_firewalld.rc == 0
+#- include: firewalld.yml
+#  when: has_firewalld.rc == 0
 
 - include: iptables.yml
   when: has_firewalld.rc != 0 and has_iptables.rc == 0

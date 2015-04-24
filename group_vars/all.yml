@@ -2,6 +2,7 @@
 # the managed machines. The user must be able to use sudo without asking
 # for password.
 ansible_ssh_user: root
+ansible_ssh_port: 11000
 
 # Kubernetes internal network for services.
 # Kubernetes services will get fake IP addresses from this range.

@@ -20,7 +20,9 @@ KUBELET_API_SERVER="--api_servers=http://{{ master_ip_address }}:8080"
 
 
 {% if dns_setup %}
-KUBELET_ARGS="--cluster_dns={{ dns_server }} --cluster_domain={{ dns_domain }}"
+#KUBELET_ARGS="--cluster_dns={{ dns_server }} --cluster_domain={{ dns_domain }}"
+KUBELET_ARGS_DNS_SERVER="--cluster_dns={{ dns_server }}"
+KUBELET_ARGS_DNS_DOMAIN="--cluster_domain={{ dns_domain }}"
 {% else %}
 KUBELET_ARGS=""
 {% endif %}

@@ -13,14 +13,20 @@
   register: has_dns_pod
   failed_when: false
   changed_when: false
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/opt/bin"
 
 - name: Create SkyDNS pod
   shell: kubectl create -f /etc/kubernetes/skydns-rc.yaml
   when: dns_setup and has_dns_pod.rc != 0
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/opt/bin"
 
 - name: Update DNS replication service
   shell: kubectl update -f /etc/kubernetes/skydns-rc.yaml
   when: dns_setup and has_dns_pod.rc == 0
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/opt/bin"
 
 
 - name: Check that the DNS service exists
@@ -28,11 +34,17 @@
   register: has_dns_service
   failed_when: false
   changed_when: false
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/opt/bin"
 
 - name: Create SkyDNS service
   shell: kubectl create -f /etc/kubernetes/skydns-svc.yaml
   when: dns_setup and has_dns_service.rc != 0
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/opt/bin"
 
 - name: Update SkyDNS service
   shell: kubectl update -f /etc/kubernetes/skydns-svc.yaml
   when: dns_setup and has_dns_service.rc == 0
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/opt/bin"

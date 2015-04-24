@@ -6,6 +6,7 @@
 
 - hosts: etcd
   sudo: yes
+  tags: etcd
   roles:
           - etcd
 

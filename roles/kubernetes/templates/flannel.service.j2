@@ -1,0 +1,16 @@
+[Unit]
+Description=Flannel Server
+Documentation=https://github.com/coreos/flannel
+
+[Service]
+EnvironmentFile=-/etc/kubernetes/flannel
+
+User=root
+ExecStart=/opt/bin/flanneld \
+	${ETCD_SERVER} \
+	${IFACE}
+
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

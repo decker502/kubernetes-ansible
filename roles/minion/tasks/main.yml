@@ -19,6 +19,14 @@
   notify:
           - restart proxy
 
+- name: Copy master service files
+  copy: src={{ item }} dest=/usr/lib/systemd/system/ mode=644  
+  with_fileglob:
+        - ./kube*
+
+- name: Daemon reload
+  command: "systemctl daemon-reload"
+
 - name: Enable cadvisor
   service: name=cadvisor enabled=yes state=started
   when: has_cadvisor.rc == 0
@@ -29,8 +37,8 @@
 - name: Enable proxy
   service: name=kube-proxy enabled=yes state=started
 
-- include: firewalld.yml
-  when: has_firewalld.rc == 0
+#- include: firewalld.yml
+#  when: has_firewalld.rc == 0
 
 - include: iptables.yml
   when: has_firewalld.rc != 0 and has_iptables.rc == 0
