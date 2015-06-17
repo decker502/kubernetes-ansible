@@ -1,7 +1,10 @@
 ---
-- name: Install flannel
-  yum: name=flannel state=latest
-  when: not is_atomic
+#- name: Install flannel
+#  yum: name=flannel state=latest
+#  when: not is_atomic
+
+- name: Write flannel service file
+  template: src=flanneld.service.j2 dest=/usr/lib/systemd/system/flanneld.service
 
 - name: Install Flannel config file
   template: src=flanneld.j2 dest=/etc/sysconfig/flanneld

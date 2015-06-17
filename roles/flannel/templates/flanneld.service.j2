@@ -1,0 +1,15 @@
+[Unit]
+Description=Flannel Server
+Documentation=https://github.com/coreos/flannel
+
+[Service]
+EnvironmentFile=-/etc/sysconfig/flanneld
+
+User=root
+ExecStart=/opt/bin/flanneld \
+	${FLANNEL_ETCD}
+
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

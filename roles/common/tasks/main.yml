@@ -40,11 +40,15 @@
   failed_when: "'package cadvisor is not installed' not in has_cadvisor.stdout and has_cadvisor.rc != 0"
   changed_when: false
 
-#- name: Clear /opt/bin directory
-#  command: "rm -rf /opt/bin"
+- name: Clear /opt/bin directory
+  command: "rm -rf /opt/bin"
 
 - name: Ensure target directory exists
   file: dest=/opt/bin state=directory
+
+- name: Check etcd config directory exists
+  file: dest=/etc/kubernetes state=directory
+
 
 - name: Copy all binaries file 
   copy: src={{ item }} dest=/opt/bin mode=755
