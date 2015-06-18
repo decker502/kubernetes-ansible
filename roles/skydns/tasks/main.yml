@@ -7,9 +7,12 @@
   template: src=skydns-svc.yaml.j2 dest=/etc/kubernetes/skydns-svc.yaml
   when: dns_setup
 
+- name: Write token system dns file
+  template: src=token-system-dns.json.j2 dest=/etc/kubernetes/token-system-dns.json
+  when: dns_setup
 
 - name: Check that the DNS pod exists
-  shell: kubectl get rc kube-dns
+  shell: kubectl get rc kube-dns-v3
   register: has_dns_pod
   failed_when: false
   changed_when: false
@@ -46,5 +49,25 @@
 - name: Update SkyDNS service
   shell: kubectl update -f /etc/kubernetes/skydns-svc.yaml
   when: dns_setup and has_dns_service.rc == 0
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/opt/bin"
+
+- name: Check that the token system dns exists
+  shell: kubectl get Secret token-system-dns
+  register: has_token_dns
+  failed_when: false
+  changed_when: false
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/opt/bin"
+
+- name: Create Token system dns
+  shell: kubectl create -f /etc/kubernetes/token-system-dns.json
+  when: dns_setup and has_token_dns.rc != 0
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/opt/bin"
+
+- name: Update Token system dns rc
+  shell: kubectl update -f /etc/kubernetes/token-system-dns.json
+  when: dns_setup and has_token_dns.rc == 0
   environment:
     PATH: "{{ ansible_env.PATH }}:/opt/bin"

@@ -3,6 +3,7 @@ Description=Kubernetes Kube-Proxy Server
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
 [Service]
+User=root
 EnvironmentFile=-/etc/kubernetes/config
 EnvironmentFile=-/etc/kubernetes/proxy
 ExecStart=/opt/bin/kube-proxy \

@@ -23,11 +23,11 @@
   environment:
     PATH: "{{ ansible_env.PATH }}:/opt/bin"
 
-- name: Delete minion definitions from masters
-  file: path=/tmp/node-{{ item }}.json state=absent
-  changed_when: false
-  with_items:
-        groups['minions']
+#- name: Delete minion definitions from masters
+#  file: path=/tmp/node-{{ item }}.json state=absent
+#  changed_when: false
+#  with_items:
+#        groups['minions']
 
 #- include: firewalld.yml
 #  when: has_firewalld.rc == 0

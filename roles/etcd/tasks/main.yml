@@ -31,8 +31,14 @@
 - name: Daemon reload
   command: "systemctl daemon-reload"
 
+- name: Add etcd user
+  user: name=etcd group=etcd home=/data/etcd
+
 - name: Enable etcd
   service: name=etcd enabled=yes state=started
+
+- name: Ensure etcd work directory
+  file: dest=/data/etcd state=directory owner=etcd group=etcd
 
 #- include: firewalld.yml
 #  when: has_firewalld.rc == 0
